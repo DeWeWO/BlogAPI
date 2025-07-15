@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view # FBV (Function Based View)
 from rest_framework.views import APIView #CBV (Class Based View)
 from rest_framework.request import Request
@@ -21,3 +21,12 @@ def create_cat(requuest: Request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def detail_cat(request: Request, slug: str):
+    category = get_object_or_404(Category, slug=slug)
+    if request.method == "GET":
+        return Response(data=CategorySerializer(instance=category).data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE":
+        category.delete()
+        return Response(data={}, status=status.HTTP_204_NO_CONTENT)
