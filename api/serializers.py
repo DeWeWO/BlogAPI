@@ -16,3 +16,6 @@ class CommentSerializer(serializers.Serializer):
     
     def create(self, validated_data):
         return Comment(**validated_data)
+    
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
