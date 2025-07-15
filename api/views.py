@@ -22,11 +22,21 @@ def create_cat(requuest: Request):
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(["GET", "PUT", "PATCH", "DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 def detail_cat(request: Request, slug: str):
     category = get_object_or_404(Category, slug=slug)
     if request.method == "GET":
         return Response(data=CategorySerializer(instance=category).data, status=status.HTTP_200_OK)
+    elif request.method == "PUT":
+        serializer = CategorySerializer(instance=category, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    # elif request.method == "PATCH":
+    #     serializer = CategorySerializer(instance=category, data=request.data, partial=True)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(data=serializer.data, status=status.HTTP_200_OK)
     elif request.method == "DELETE":
         category.delete()
         return Response(data={}, status=status.HTTP_204_NO_CONTENT)
