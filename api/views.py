@@ -11,3 +11,5 @@ from .serializers import CategorySerializer
 @api_view(["GET"])
 def get_cats(request: Request):
     cats = Category.objects.all()
+    serializer = CategorySerializer(cats, many=True)
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
