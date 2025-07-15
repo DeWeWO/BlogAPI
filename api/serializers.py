@@ -1,21 +1,16 @@
 from datetime import datetime
 from rest_framework import serializers
 
-class Comment:
-    def __init__(self, email, content, created = None):
-        self.email = email
-        self.content = content
-        self.created = created or datetime.now()
 
-# comment1 = Comment("admin@gmail.com", "test comment content")
-
-class CommentSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    content = serializers.CharField(min_length=3, max_length=1024)
-    created = serializers.DateTimeField()
+class CategorySerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=200, required=True)
+    slug = serializers.SlugField(read_only=True)
+    description = serializers.CharField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
     
     def create(self, validated_data):
-        return Comment(**validated_data)
+        return super().create(validated_data)
     
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)

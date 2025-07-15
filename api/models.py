@@ -6,7 +6,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_add = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(self.title)
