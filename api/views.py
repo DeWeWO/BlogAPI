@@ -47,3 +47,11 @@ class PostListAPIView(APIView):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class PostCreateAPIView(APIView):
+    def post(self, request):
+        serializer = PostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)

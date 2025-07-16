@@ -27,6 +27,9 @@ class PostSerializer(serializers.ModelSerializer):
         data["author"] = instance.author.username
         return data
     
+    def validate(self, attrs):
+        return super().validate(attrs)
+    
     class Meta:
         model = Post
         fields = ["id", "title", "slug", "description", "image", "views", "author", "category"]
