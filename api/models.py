@@ -27,3 +27,10 @@ class Post(BaseModel):
     views = models.PositiveBigIntegerField(default=0)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="posts")
+    
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+    
+    class Meta:
+        db_table = "posts"
