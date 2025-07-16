@@ -21,6 +21,12 @@ class CategorySerializer(serializers.Serializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["category"] = CategorySerializer(instance=instance.category).data
+        data["author"] = instance.author.username
+        return data
+    
     class Meta:
         model = Post
         fields = ["id", "title", "slug", "description", "image", "views", "author", "category"]

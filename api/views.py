@@ -4,8 +4,8 @@ from rest_framework.views import APIView #CBV (Class Based View)
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Category
-from .serializers import CategorySerializer
+from .models import Category, Post
+from .serializers import CategorySerializer, PostSerializer
 
 
 @api_view(["GET"])
@@ -40,3 +40,10 @@ def detail_cat(request: Request, slug: str):
     elif request.method == "DELETE":
         category.delete()
         return Response(data={}, status=status.HTTP_204_NO_CONTENT)
+
+
+class PostListAPIView(APIView):
+    def get(self, request):
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
