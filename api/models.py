@@ -20,4 +20,10 @@ class Category(BaseModel):
         return super().save(*args, **kwargs)
 
 class Post(BaseModel):
-    pass
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+    description = models.TextField()
+    image = models.ImageField(upload_to="posts/")
+    views = models.PositiveBigIntegerField(default=0)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="posts")
