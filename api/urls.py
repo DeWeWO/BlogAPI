@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import get_cats, create_cat, detail_cat, PostListAPIView, PostCreateAPIView
+from .views import get_cats, create_cat, detail_cat, PostListAPIView, PostCreateAPIView, PostRetrieveUpdateDestroyAPIView
 
 
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     # Posts urls
     path("posts/", PostListAPIView.as_view(), name="post-list"),
     path("create/post/", PostCreateAPIView.as_view(), name="post-create"),
+    path("post/<slug:slug>/", PostRetrieveUpdateDestroyAPIView.as_view(), name="post-detail") 
 ]

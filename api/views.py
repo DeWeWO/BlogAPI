@@ -58,3 +58,25 @@ class PostCreateAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+class PostRetrieveUpdateDestroyAPIView(GenericAPIView):
+    serializer_class = PostSerializer
+    lookup_field = "slug"
+    queryset = Post.objects.all()
+    
+    def get(self, request, slug):
+        product = self.get_object()
+        serializer = PostSerializer(instance=product)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, slug):
+        product = self.get_object()
+        serializer = PostSerializer(instance=product, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, slug):
+        product = self.get_object()
+        product.delete()
+        return Response(data={}, status=status.HTTP_204_NO_CONTENT)
