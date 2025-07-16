@@ -1,4 +1,4 @@
-from .models import Category
+from .models import Category, Post
 from rest_framework import serializers
 
 
@@ -18,3 +18,10 @@ class CategorySerializer(serializers.Serializer):
         instance.description = validated_data.get("description", instance.description)
         instance.save()
         return instance
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ["id", "title", "slug", "description", "image", "views", "author", "category"]
+        read_only_fields = ["id", "slug"]
