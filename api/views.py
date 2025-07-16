@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view # FBV (Function Based View)
 from rest_framework.views import APIView #CBV (Class Based View)
+from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
@@ -49,9 +50,11 @@ class PostListAPIView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class PostCreateAPIView(APIView):
+class PostCreateAPIView(GenericAPIView):
+    serializer_class = PostSerializer
+    
     def post(self, request):
-        serializer = PostSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
