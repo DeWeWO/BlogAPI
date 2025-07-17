@@ -1,5 +1,34 @@
 from .models import Category, Post
 from rest_framework import serializers
+from django.contrib.auth.models import User
+
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    password1 = serializers.CharField(trim_whitespace=False, style={'input_type': 'password'})
+    password2 = serializers.CharField(trim_whitespace=False, style={'input_type': 'password'})
+    
+    def validate(self, attrs):
+        password1 = attrs.get("password1")
+        password2 = attrs.get("password2")
+        if password1 != password2:
+            raise serializers.ValidationError(detail={"password2": "Parollar bir xil emas, tekshirib qayta kiriting!"})
+        return attrs
+    
+    def create(self, validated_data):
+        password1 = validated_data.pop("password1", "")
+        password2 = validated_data.pop("password2", "")
+        user = User.objects.create(**validated_data)
+        user.set_password(password1)
+        user.save()
+        return user
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+
+
 
 
 class CategorySerializer(serializers.Serializer):
