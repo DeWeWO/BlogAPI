@@ -1,6 +1,7 @@
 from .models import Category, Post
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 
 
@@ -22,7 +23,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create(**validated_data)
         user.set_password(password1)
         user.save()
-        return user
+        token = Token.objects.create(user=user)
+        return token
     
     class Meta:
         model = User

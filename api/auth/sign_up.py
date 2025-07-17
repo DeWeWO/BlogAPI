@@ -9,5 +9,5 @@ class RegisterAPIView(GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(data={"token": "test_token"}, status=status.HTTP_201_CREATED)
+        token = serializer.save()
+        return Response(data={"token": token.key}, status=status.HTTP_201_CREATED)
