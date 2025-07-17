@@ -31,6 +31,25 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(trim_whitespace=False, style={'input_type': 'password'})
+    
+    def validate(self, attrs):
+        email = attrs.get("email")
+        password = attrs.get("password")
+        user = User.objects.filter(email=email).first()
+        if user is None:
+            raise serializers.ValidationError(detail={"email": "Not'g'ri email!"})
+        if not user.check_password(password):
+            raise serializers.ValidationError(detail={"password": "Not'g'ri parol!"})
+        return attrs
+    
+    def create(self, validated_data):
+        email = validated_data.get("email")
+        user = User.objects.filter(email=email).first()
+        token, created = Token.objects.get_or_create(user=user)
+        return token
 
 
 class CategorySerializer(serializers.Serializer):
