@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view # FBV (Function Based View)
 from rest_framework.views import APIView #CBV (Class Based View)
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
 from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -86,6 +87,7 @@ class PostRetrieveUpdateDestroyAPIView(GenericAPIView):
 class PostListCreateAPIView(ListCreateAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+    permission_classes = (IsAdminUser, )
 
 class PostRetriveUpdateDestroyAPIView2(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
