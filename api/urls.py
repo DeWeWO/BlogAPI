@@ -15,5 +15,5 @@ urlpatterns = [
     # Posts urls
     path("posts/", PostListCreateAPIView.as_view(), name="post-list"),
     path("create/post/", PostCreateAPIView.as_view(), name="post-create"),
-    path("post/<slug:slug>/", PostRetriveUpdateDestroyAPIView2.as_view(), name="post-detail") 
+    path("post/<slug:slug>/", PostRetriveUpdateDestroyAPIView2.as_view(), name="post-detail"),
 ]
