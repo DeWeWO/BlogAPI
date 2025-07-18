@@ -10,6 +10,7 @@ from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.viewsets import ViewSet
 
 
 @api_view(["GET"])
@@ -87,20 +88,33 @@ class PostRetrieveUpdateDestroyAPIView(GenericAPIView):
 
 
 
-class PostListCreateAPIView(ListCreateAPIView):
-    serializer_class = PostSerializer
-    queryset = Post.objects.all().order_by("id")
-    permission_classes = (IsAuthenticated, )
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['category', 'author']
-    search_fields = ['author__username', 'title', 'description']
-    ordering_fields = ['author', 'category']
+# class PostListCreateAPIView(ListCreateAPIView):
+#     serializer_class = PostSerializer
+#     queryset = Post.objects.all().order_by("id")
+#     permission_classes = (IsAuthenticated, )
+#     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+#     filterset_fields = ['category', 'author']
+#     search_fields = ['author__username', 'title', 'description']
+#     ordering_fields = ['author', 'category']
     
-    def get_queryset(self):
-        username = self.request.query_params.get("username")
-        if username is not None:
-            return Post.objects.filter(author__username=username)
-        return super().get_queryset()
+#     def get_queryset(self):
+#         username = self.request.query_params.get("username")
+#         if username is not None:
+#             return Post.objects.filter(author__username=username)
+#         return super().get_queryset()
+
+class PostListViewSet(ViewSet):
+    queryset = Post.objects.all()
+    
+    def list(self, request):
+        serializer = PostSerializer(Post.objects.all(), many=True)
+        return Response(serializer.data, status.HTTP_200_OK)
+    
+    def create(self, request):
+        serializer = PostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({}, status.HTTP_201_CREATED)
 
 class PostRetriveUpdateDestroyAPIView2(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer

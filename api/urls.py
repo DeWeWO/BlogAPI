@@ -1,8 +1,13 @@
 from django.urls import path
-from .views import get_cats, create_cat, detail_cat, PostListAPIView, PostCreateAPIView, PostRetrieveUpdateDestroyAPIView, PostListCreateAPIView, PostRetriveUpdateDestroyAPIView2
+from .views import get_cats, create_cat, detail_cat, PostListAPIView, PostCreateAPIView, PostRetrieveUpdateDestroyAPIView, PostRetriveUpdateDestroyAPIView2, PostListViewSet # PostListCreateAPIView
 from .auth.sign_up import RegisterAPIView
 from .auth.sign_in import LoginAPIView
 from .auth.sign_out import LogOutAPIView
+from rest_framework.routers import DefaultRouter, SimpleRouter
+
+
+router = SimpleRouter()
+router.register("post", PostListViewSet)
 
 
 urlpatterns = [
@@ -13,7 +18,9 @@ urlpatterns = [
     path("create/cat/", create_cat, name="create_cat"),
     path("cat/<slug:slug>/", detail_cat, name="detail_cat"),
     # Posts urls
-    path("posts/", PostListCreateAPIView.as_view(), name="post-list"),
-    path("create/post/", PostCreateAPIView.as_view(), name="post-create"),
-    path("post/<slug:slug>/", PostRetriveUpdateDestroyAPIView2.as_view(), name="post-detail"),
+    # path("posts/", PostListCreateAPIView.as_view(), name="post-list"),
+    # path("create/post/", PostCreateAPIView.as_view(), name="post-create"),
+    # path("post/<slug:slug>/", PostRetriveUpdateDestroyAPIView2.as_view(), name="post-detail"),
 ]
+
+urlpatterns += router.urls
