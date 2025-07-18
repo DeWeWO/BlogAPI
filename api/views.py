@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view # FBV (Function Based View)
+from rest_framework.decorators import api_view, permission_classes  # FBV (Function Based View)
 from rest_framework.views import APIView #CBV (Class Based View)
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
 from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
@@ -11,6 +11,7 @@ from .serializers import CategorySerializer, PostSerializer
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_cats(request: Request):
     cats = Category.objects.all()
     serializer = CategorySerializer(cats, many=True)
