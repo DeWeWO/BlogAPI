@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 @api_view(["GET"])
@@ -87,8 +89,18 @@ class PostRetrieveUpdateDestroyAPIView(GenericAPIView):
 
 class PostListCreateAPIView(ListCreateAPIView):
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by("id")
     permission_classes = (IsAuthenticated, )
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['category', 'author']
+    search_fields = ['author__username', 'title', 'description']
+    ordering_fields = ['author', 'category']
+    
+    def get_queryset(self):
+        username = self.request.query_params.get("username")
+        if username is not None:
+            return Post.objects.filter(author__username=username)
+        return super().get_queryset()
 
 class PostRetriveUpdateDestroyAPIView2(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
