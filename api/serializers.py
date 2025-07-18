@@ -71,16 +71,19 @@ class CategorySerializer(serializers.Serializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source="author.username")
+    
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["category"] = CategorySerializer(instance=instance.category).data
-        data["author"] = instance.author.username
+        # data["author"] = instance.author.username
         return data
     
-    def validate(self, attrs):
-        return super().validate(attrs)
+    def create(self, validated_data):
+        author = self.context.get("author")
+        return super().create(validated_data, author=author)
     
     class Meta:
         model = Post
         fields = ["id", "title", "slug", "description", "image", "views", "author", "category"]
-        read_only_fields = ["id", "slug", "views"]
+        read_only_fields = ["id", "slug", "views", "author"]
