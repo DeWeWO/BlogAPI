@@ -9,6 +9,9 @@ from rest_framework.routers import DefaultRouter, SimpleRouter
 router = SimpleRouter()
 router.register("post", PostListViewSet)
 
+post_list = PostListViewSet.as_view({"get": "list"})
+post_create = PostListViewSet.as_view({"post": "create"})
+
 
 urlpatterns = [
     path("register/", RegisterAPIView.as_view(), name="register"),
@@ -21,6 +24,8 @@ urlpatterns = [
     # path("posts/", PostListCreateAPIView.as_view(), name="post-list"),
     # path("create/post/", PostCreateAPIView.as_view(), name="post-create"),
     # path("post/<slug:slug>/", PostRetriveUpdateDestroyAPIView2.as_view(), name="post-detail"),
+    post_list,
+    post_create,
 ]
 
 urlpatterns += router.urls
