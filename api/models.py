@@ -34,3 +34,7 @@ class Post(BaseModel):
     
     class Meta:
         db_table = "posts"
+
+
+
+
