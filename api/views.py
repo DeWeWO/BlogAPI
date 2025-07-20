@@ -120,5 +120,3 @@ class PostRetriveUpdateDestroyAPIView2(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = "slug"
-
-
