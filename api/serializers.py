@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 
-
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     password1 = serializers.CharField(trim_whitespace=False, style={'input_type': 'password'})
