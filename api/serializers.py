@@ -84,3 +84,5 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ["id", "title", "slug", "description", "image", "views", "author", "category"]
         read_only_fields = ["id", "slug", "views", "author"]
+
+
