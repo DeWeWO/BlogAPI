@@ -12,3 +12,5 @@ class RegisterAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         token = serializer.save()
         return Response({}, status=status.HTTP_201_CREATED)
+
+
