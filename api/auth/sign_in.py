@@ -11,5 +11,3 @@ class LoginAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         token = serializer.save()
         return Response(data={"token": token.key}, status=status.HTTP_201_CREATED)
-
-
