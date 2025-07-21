@@ -11,3 +11,5 @@ class LogOutAPIView(APIView):
         user = request.user
         Token.objects.filter(user=user).delete()
         return Response(data={"success": "Logged Out!"}, status=status.HTTP_200_OK)
+
+
